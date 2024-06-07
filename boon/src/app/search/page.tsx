@@ -1,15 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { useRouter } from "next/navigation";
 
 const Search = () => {
   // wallet stuff
   const { publicKey } = useWallet();
-
   const address: any = publicKey?.toBase58();
+  const router = useRouter();
+
   return (
     <main className="w-full h-screen bg-black">
       <section className="fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out flex items-center   max-h-[70px] bg-black">
@@ -41,21 +43,25 @@ const Search = () => {
       </section>
 
       <section className="flex flex-col items-center w-full h-[80vh] sm:h-[65vh] lg:h-[60vh] bg-black px-3 lg:px-6 justify-between  relative top-32">
-        <div className="text-white">
-          <h1 className="text-2xl lg:text-4xl font-black text-[#F7941E]">
+        <div className="flex flex-col w-full p-20 items-center justify-center text-white">
+          <h1 className="w-fit text-2xl lg:text-4xl font-black text-[#F7941E]">
             Tap to Boon{" "}
           </h1>
 
-          <h1>Wallet connected address is: {address}</h1>
+          <h1 className="text-center">
+            Wallet connected address is: <br />
+            {address}
+          </h1>
         </div>
 
-        <span className="">
+        <span className="cursor-pointer">
           <Image
             className="w-56 lg:w-72"
             width="1000"
             height="1000"
             src="/images/b-hero2.png"
             alt="Solana"
+            onClick={() => router.push("/fetch")}
           />
         </span>
       </section>

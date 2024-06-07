@@ -1,3 +1,5 @@
+@import url("https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css");
+@import url("https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,6 +26,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family: "ABeeZee", sans-serif !important;
 }
 
 @layer utilities {
@@ -31,7 +34,6 @@ body {
     text-wrap: balance;
   }
 }
-
 
 html {
   scroll-behavior: smooth;
