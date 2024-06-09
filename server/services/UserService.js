@@ -55,14 +55,11 @@ module.exports = {
   //UPDATE USER
   updateUser: async (req, res) => {
     try {
-      const addr = req.body.addr;
-      const points = req.body.point;
-      const counter = req.body.counter;
+      const { walletAddress, points, counter } = req.body;
 
       const result = await UserModel.findOneAndUpdate(
-        { walletAddress: addr },
-        { points: points },
-        { counter: counter },
+        { walletAddress: walletAddress },
+        { points: points, counter: counter },
         { new: true }
       );
       if (result) {

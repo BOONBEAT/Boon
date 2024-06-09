@@ -22,12 +22,10 @@ mongoose
 
 // Middleware
 app.use(
-  cors(
-    cors({
-      origin: ["http://localhost:3000", "https://boon.vercel.app"],
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    })
-  )
+  cors({
+    origin: ["http://localhost:3000", "https://boon.vercel.app"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  })
 );
 app.use(bodyParser.json());
 app.use(express.json());
