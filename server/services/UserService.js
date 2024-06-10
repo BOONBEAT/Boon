@@ -4,22 +4,27 @@ module.exports = {
   createUser: async (req, res) => {
     try {
       const walletAddress = req.body.walletAddress;
-      await UserModel.findOne({ walletAddress: walletAddress }).then(
-        async (addr) => {
-          if (addr !== null) {
-            res.status(404).send("User already exists");
-          } else {
-            const newUser = new UserModel({ walletAddress: walletAddress });
-            await newUser.save().then((docs) => {
-              res.status(200).json({
-                status: "success",
-                user: docs,
-                message: "User Created Successfully",
-              });
+      const points = req.body.points;
+      await UserModel.findOne({
+        walletAddress: walletAddress,
+        points: points,
+      }).then(async (addr) => {
+        if (addr !== null) {
+          res.status(404).send("User already exists");
+        } else {
+          const newUser = new UserModel({
+            walletAddress: walletAddress,
+            points: points,
+          });
+          await newUser.save().then((docs) => {
+            res.status(200).json({
+              status: "success",
+              user: docs,
+              message: "User Created Successfully",
             });
-          }
+          });
         }
-      );
+      });
     } catch (error) {
       res.send(error);
     }
@@ -59,7 +64,7 @@ module.exports = {
 
       const result = await UserModel.findOneAndUpdate(
         { walletAddress: walletAddress },
-        { points: points, counter: counter },
+        { points: points },
         { new: true }
       );
       if (result) {

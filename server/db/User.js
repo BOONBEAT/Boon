@@ -4,7 +4,6 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 var UserSchema = new mongoose.Schema(
   {
     walletAddress: String,
-    counter: Number,
     points: Number,
   },
   { timestamps: true }

@@ -3,8 +3,11 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const cron = require("node-cron");
 const router = require("./routes/router");
 const app = express();
+
+const { checkUserHoldings } = require("./services/snapshot");
 
 dotenv.config();
 
@@ -19,6 +22,13 @@ mongoose
   .catch((err) => {
     console.log(`error connecting to database ${err}`);
   });
+
+//cron job
+
+cron.schedule("0 0 * * *", async () => {
+  console.log("Running BONK holdings check every 24 hours");
+  await checkUserHoldings();
+});
 
 // Middleware
 app.use(

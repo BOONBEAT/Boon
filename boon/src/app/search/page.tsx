@@ -1,20 +1,20 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import axios from "axios";
 import Image from "next/image";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
-
+import ConnectMobile from "@/components/connect-mobile";
 
 const Search: React.FC = () => {
   // wallet stuff
-  const { publicKey } = useWallet();
+  const { publicKey, connected } = useWallet();
   const address: any = publicKey?.toBase58();
 
-
-  /// ////////////////////////////////////////////////////
-
+  const [userInit, setUserInit] = useState<Boolean>(false);
+  const [initialPoints, setInitialPoints] = useState<number>(0);
   const [isRecording, setIsRecording] = useState(false);
   const [modalState, setModalState] = useState(false);
   const [result, setResult] = useState({
@@ -26,6 +26,71 @@ const Search: React.FC = () => {
     timecode: "00:14",
     title: "Beautiful People (feat. Khalid)",
   });
+
+  useEffect(() => {
+    if (address) {
+      fetchUserPoints();
+      createUser(address);
+    }
+  }, [address]);
+
+  ///////create user //////////
+
+  const createUser = async (addy: any) => {
+    try {
+      const createUserResponse = await fetch(
+        "http://localhost:5000/api/v1/user/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ walletAddress: addy, points: 0 }),
+        }
+      );
+
+      const data = await createUserResponse.json();
+
+      if (data.status === "success") {
+        console.log("User created successfully");
+        setUserInit(true);
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
+
+  // fetch points ////////
+
+  const fetchUserPoints = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/v1/user/getUser/${address}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      const points = data.points;
+      setInitialPoints(points);
+
+      if (response.ok) {
+        setUserInit(true);
+      } else {
+        console.error("Failed to fetch user points:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user points:", error);
+    }
+  };
+
+  /// ////////////////////////////////////////////////////
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -109,28 +174,7 @@ const Search: React.FC = () => {
     stopRecording();
   };
 
-  const walletAddresssave = async () => {
-    const response = await fetch("/api/wallet", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ walletKey: address }),
-    });
-
-    if (response.ok) {
-      console.log("Wallet key sent to backend successfully");
-    } else {
-      console.error("Failed to send wallet key");
-    }
-  };
-
   useEffect(() => {
-    // // Start recording when the component mounts
-    // startRecording();
-
-    // Cleanup function to stop recording when the component unmounts
-    walletAddresssave();
     return () => {
       if (
         mediaRecorderRef.current &&
@@ -142,10 +186,10 @@ const Search: React.FC = () => {
   }, []);
 
   return (
-    <main className="w-full h-screen bg-black overflow-hidden">
+    <main className="w-full h-screen bg-black md:overflow-hidden">
       <section className="fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out flex items-center   max-h-[70px] bg-black ">
         <div className="flex flex-row w-full pr-6 items-center justify-between">
-          <span className="flex items-center relative -left-7">
+          <Link href="/" className="flex items-center relative -left-7">
             <Image
               className="w-32 h-32"
               width="250"
@@ -154,12 +198,18 @@ const Search: React.FC = () => {
               alt="Solana"
             />
             <h1 className=" absolute -right-4 font-bold text-lg ">Boon</h1>
-          </span>
+          </Link>
 
-          <span>
+          <div className="hidden lg:flex">
+            <li className="text-sm md:text-lg font-bold text-white hover:text-[#ffb703] w-full inline-flex items-center justify-center border border-transparent px-4 py-2 my-2 rounded-sm transition duration-150 ease-in-out">
+              <span className="mx-2 text-[#F7941E]/60 text-sm font-bold">
+                {connected ? `Boon Points: ${initialPoints}` : ""}
+              </span>
+            </li>
+
             <div className="flex-none">
               <WalletMultiButton
-                className="bg-[#F7941E] px-3 py-1 text-black font-semibold rounded-2xl shadow-[#F7941E] "
+                className="bg-[#F7941E]   text-black font-semibold rounded-2xl shadow-[#F7941E] "
                 style={{
                   backgroundColor: "#F7941E",
                   color: "black",
@@ -167,34 +217,39 @@ const Search: React.FC = () => {
                 }}
               />
             </div>
-          </span>
+          </div>
+
+          <ConnectMobile points={initialPoints} />
         </div>
       </section>
 
-      <section className="flex flex-col items-center w-full h-screen bg-black px-3 lg:px-6 relative top-16 overflow-hidden">
-        <div className="flex flex-col w-full p-20 items-center justify-center text-white">
-          <h1 className="w-fit text-2xl lg:text-4xl font-black text-[#F7941E]">
-            Tap to Boon
-          </h1>
-
-          <h1 className="text-center">
-            Wallet connected address is: <br />
-            {address}
-          </h1>
+      <section className="flex flex-col items-center w-full h-[94vh] md:h-screen bg-black px-3 lg:px-6 relative top-16 ">
+        <div className="flex flex-col w-full py-12 lg:p-20 items-center justify-center text-white">
+          <div className="flex w-full flex-col gap-8 justify-center items-center">
+            <h1 className="w-fit text-2xl lg:text-4xl font-black text-[#F7941E]">
+              Tap to Boon
+            </h1>
+            <p className="text-white/60 text-xs md:text-base">
+              Hear any music playing? Discover the song now!
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-col  items-center justify-center cursor-pointer">
-          <Image
-            className={`w-56 lg:w-64 ${
-              isRecording ? "bx bx-user-voice bx-burst" : "bx bx-user-voice"
-            }`}
-            width="1000"
-            height="1000"
-            src="/images/Boon-logo.svg"
-            alt="Solana"
-            onClick={modalStart}
-          />
-          <h4 className="mt-4">
+          <span className="border-4 border-[#201306] rounded-full ">
+            <Image
+              className={`w-56  bg-black border-4 rounded-full border-[#201306]  lg:w-64 my-8 mx-8 ${
+                isRecording ? "bx bx-user-voice bx-burst" : "bx bx-user-voice "
+              }`}
+              width="1000"
+              height="1000"
+              src="/images/Boon-logo.svg"
+              alt="Solana"
+              onClick={modalStart}
+            />
+          </span>
+
+          <h4 className="mt-9 text-white/70 text-xs md:text-base">
             {isRecording
               ? "Boon is detecting song, bring audio closer to your device..."
               : "Discover New Music around you"}
@@ -203,7 +258,7 @@ const Search: React.FC = () => {
       </section>
 
       <div
-        className={`absolute  top-32 mx-24 lg:mx-32 flex flex-col items-center justify-center rounded-3xl bg-[#271807] w-[80%] h-[70%] ${
+        className={`absolute  top-32 mx-4 md:mx-24 lg:mx-32 flex flex-col items-center justify-center rounded-3xl bg-[#271807] w-[92%] md:w-[80%] h-[70%] border-l-8 border-r-8 border-2 border-white/10  ${
           result !== null ? "hidden" : "flex"
         }`}
         id="overlay"
@@ -220,46 +275,80 @@ const Search: React.FC = () => {
         >
           &times;
         </span>
-        <div>
+        <div className="flex w-[90%] sm:w-[100%] sm:px-52">
           <>
             {/* LOADING */}
-            <div style={{ display: "none" }} id="loading" ref={loadingRef}>
-              <h1>
+            <div
+              className="flex flex-col  gap-8 font-bold  "
+              style={{ display: "none" }}
+              id="loading"
+              ref={loadingRef}
+            >
+              <h1 className="text-xs lg:text-lg text-[#F7941E] ">
                 <i className="bx bx-loader-alt bx-spin"></i>Loading...
               </h1>
-              <small>Song data coming through</small>
+              <small className="text-xs lg:text-lg ">
+                Song data coming through
+              </small>
             </div>
             {/* RESPONSE */}
-            <div style={{ display: "none" }} id="response" ref={responseRef}>
-              <h1>
-                <i className="bx bxs-music"></i>
+            <div
+              className="flex w-full items-center justify-center flex-col gap-12"
+              style={{ display: "none" }}
+              id="response"
+              ref={responseRef}
+            >
+              <h1 className=" font-bold flex gap-2 items-center md:text-2xl lg:font-4xl text-[#F7941E] py-4">
+                <i className="bx bxs-music "></i>
                 {result !== null ? "Found" : "Not Found"}
               </h1>
 
               {result !== null ? (
-                <>
-                  <small>ARTIST: {result.artist}</small>
-                  <br />
-                  <small>TITLE: {result.title}</small>
-                  <br />
-                  <small>ALBUM: {result.album}</small>
-                  <br />
-                  <small>Release Date: {result.release_date}</small>
-                  <br />
-                  <a
-                    href={result.song_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Link to song
-                  </a>
-                  <br />
-                  <a href="/fetch">Click to boon again</a>
-                </>
+                <div className="flex flex-col gap-4 w-full">
+                  <small className=" flex gap-2 items-center md:text-base  lg:font-lg font-semibold tracking-widest">
+                    {" "}
+                    <span className="text-[#F7941E] font-bold">ARTIST: </span>
+                    {result.artist}
+                  </small>
+
+                  <small className=" flex gap-2 items-center md:text-lg  lg:font-xl font-semibold">
+                    {" "}
+                    TITLE:{" "}
+                    <span className="text-[#F7941E] font-bold">
+                      {result.title}
+                    </span>{" "}
+                  </small>
+
+                  <small className=" flex gap-2 items-center md:text-lg  lg:font-xl font-semibold">
+                    ALBUM: {result.album}
+                  </small>
+
+                  <small className=" flex gap-2 items-center md:text-lg  lg:font-xl font-semibold">
+                    Release Date: {result.release_date}
+                  </small>
+
+                  <div className="flex gap-4">
+                    <a
+                      className="  md:w-48 lg:w-52 p-2 inline-flex items-center justify-center bg-[#201306]  text-white text-xs md:text-base border-l-4 border-r-4 border border-white/10 font-bold rounded-full outline-1 outline-double outline-[#201306] hover:bg-[#ff9a03]/50 hover:text-black"
+                      href={result.song_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Link to song
+                    </a>
+
+                    <a
+                      className="  md:w-48 lg:w-52 p-2 inline-flex items-center justify-center bg-[#201306]  text-white text-xs md:text-base   border-l-4 border-r-4 border border-white/10 font-bold rounded-full outline-1 outline-double outline-[#201306] hover:bg-[#ff9a03]/50 hover:text-black"
+                      href="/search"
+                    >
+                      Click to boon again
+                    </a>
+                  </div>
+                </div>
               ) : (
                 <>
                   <small>Try to listen again</small> <br />
-                  <a href="/fetch">Click to boon again</a>
+                  <a href="/search">Click to boon again</a>
                 </>
               )}
             </div>

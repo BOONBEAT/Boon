@@ -7,10 +7,8 @@ import Image from "next/image";
 
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
-
 const Header = () => {
   const [top, setTop] = useState<boolean>(true);
- 
 
   const scrollHandler = () => {
     window.pageYOffset > 10 ? setTop(false) : setTop(true);
@@ -29,7 +27,7 @@ const Header = () => {
       }`}
     >
       <div className="flex flex-row w-full pr-6 items-center justify-between">
-        <span className="flex items-center relative -left-7">
+        <Link href="/" className="flex items-center relative -left-7">
           <Image
             className="w-32 h-32"
             width="250"
@@ -38,10 +36,13 @@ const Header = () => {
             alt="Solana"
           />
           <h1 className=" absolute -right-4 font-bold text-lg ">Boon</h1>
-        </span>
+        </Link>
         <ul className="hidden lg:flex gap-9 font-medium text-lg items-center">
-          <li>About</li>
-          <li>Resources</li>
+          <li>
+            <a href="https://medium.com/@boon1ecosystem/introducing-the-decentralised-music-ecosystem-on-solana-86184e56a749">
+              Resources
+            </a>
+          </li>
 
           <li>
             <Link
@@ -59,4 +60,3 @@ const Header = () => {
 };
 
 export default Header;
-

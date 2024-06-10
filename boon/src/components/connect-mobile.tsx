@@ -4,12 +4,20 @@ import React from "react";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { FaBarsStaggered, FaX } from "react-icons/fa6";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react";
 
-const Mobile: React.FC = () => {
+interface ConnectMobileProps {
+  points: number;
+}
+
+const ConnectMobile: React.FC<ConnectMobileProps> = ({ points }) => {
   const [mobileNavOpen, setMobileNavOpen] = useState<boolean>(false);
 
   const trigger = useRef<HTMLButtonElement>(null);
   const mobileNav = useRef<HTMLDivElement>(null);
+
+  const { connected } = useWallet();
 
   // Close the mobile menu on click outside
   useEffect(() => {
@@ -65,33 +73,36 @@ const Mobile: React.FC = () => {
       <nav
         id="mobile-nav"
         ref={mobileNav}
-        className={`absolute top-20 z-20 left-0 w-full px-4 sm:px-6 overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileNavOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-80"
+        className={`absolute top-20 z-20 left-0 h-[120vh] w-full px-4 sm:px-6 overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileNavOpen ? " opacity-100" : "max-h-0 opacity-80"
         }`}
       >
         <ul className="flex flex-col items-center justify-center  gap-4 bg-[#271807] border-l-4 border-r-4 border border-white/10 px-4 py-8 rounded-xl">
           <li
-            className="md:text-lg font-bold text-white hover:text-[#ffb703] w-full inline-flex items-center justify-center border border-transparent px-4 py-2 my-2 rounded-sm transition duration-150 ease-in-out"
+            className="text-sm md:text-lg font-bold text-white hover:text-[#ffb703] w-full inline-flex items-center justify-center border border-transparent px-4 py-2 my-2 rounded-sm transition duration-150 ease-in-out"
             onClick={() => setMobileNavOpen(false)}
           >
-            <a href="https://medium.com/@boon1ecosystem/introducing-the-decentralised-music-ecosystem-on-solana-86184e56a749">
-              Resources
-            </a>
+            <span className="mx-2 text-[#F7941E]/60 text-sm font-bold">
+              {connected ? `Boon Points: ${points}` : ""}
+            </span>
           </li>
 
-          <li>
-            <Link
-              href="/search"
-              className="w-80 p-2 inline-flex items-center justify-center bg-[#201306]  text-white  border-l-4 border-r-4 border border-white/10 font-bold rounded-full outline-1 outline-double outline-[#201306] hover:bg-[#ff9a03]/50 hover:text-black"
-              onClick={() => setMobileNavOpen(false)}
-            >
-              Tap to Boon
-            </Link>
-          </li>
+          <div>
+            <div className="flex-none ">
+              <WalletMultiButton
+                className="bg-[#F7941E]   text-black font-semibold rounded-2xl shadow-[#F7941E] "
+                style={{
+                  backgroundColor: "#F7941E",
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+              />
+            </div>
+          </div>
         </ul>
       </nav>
     </div>
   );
 };
 
-export default Mobile;
+export default ConnectMobile;
