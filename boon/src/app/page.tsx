@@ -99,7 +99,7 @@ export default function Home() {
                 <div className="flex flex-col items-center gap-4 py-4 text-center">
                   <h1 className="lg:text-xl font-bold ">Music Marketplace</h1>
                   <p className="text-white/50 text-xs lg:text-sm">
-                    Boon's ecosystem features an instrumentals marketplace with{" "}
+                    The ecosystem features an instrumentals marketplace with{" "}
                     <span className="font-bold">OPOS</span> tech enabled.
                   </p>
                 </div>

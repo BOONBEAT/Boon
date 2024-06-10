@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import axios from "axios";
 import Image from "next/image";
@@ -26,13 +26,6 @@ const Search: React.FC = () => {
     timecode: "00:14",
     title: "Beautiful People (feat. Khalid)",
   });
-
-  useEffect(() => {
-    if (address) {
-      fetchUserPoints();
-      createUser(address);
-    }
-  }, [address]);
 
   ///////create user //////////
 
@@ -63,8 +56,7 @@ const Search: React.FC = () => {
   };
 
   // fetch points ////////
-
-  const fetchUserPoints = async () => {
+  const fetchUserPoints = useCallback(async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/v1/user/getUser/${address}`,
@@ -88,9 +80,16 @@ const Search: React.FC = () => {
     } catch (error) {
       console.error("Error fetching user points:", error);
     }
-  };
+  }, [address]);
 
   /// ////////////////////////////////////////////////////
+
+  useEffect(() => {
+    if (address) {
+      fetchUserPoints();
+      createUser(address);
+    }
+  }, [address, fetchUserPoints]);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
