@@ -47,7 +47,7 @@ export default function Home() {
         </span>
       </section>
 
-      <section className="relative top-72  flex flex-col w-full h-[330vh] sm:h-[300vh] lg:h-[220vh] bg-black px-3 lg:px-6 justify-between rounded-bl-3xl rounded-br-3xl   py-24">
+      <section className="relative top-72  flex flex-col w-full   bg-black px-3 lg:px-6 justify-between rounded-bl-3xl rounded-br-3xl   py-24">
         <div className="">
           <div className="flex flex-col items-center gap-6 lg:gap-12">
             <h1 className="text-lg text-center lg:text-3xl text-[#F7941E] font-bold leading-8">
@@ -148,7 +148,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative top-72  flex flex-col w-full h-[190vh] lg:h-[140vh] px-3 lg:px-6 justify-between overflow-hidden py-24">
+      <section className="relative top-72  flex flex-col w-full px-3 lg:px-6 justify-between overflow-hidden py-24">
         <div className=" flex flex-col items-center py-12">
           <div className="flex flex-col w-full items-center gap-9">
             <h1 className="text-lg lg:text-3xl font-bold text-center">
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="relative top-72  flex flex-col w-full h-[73vh] sm:h-[57vh] lg:h-[78vh] xl:h-[65vh] px-3 lg:px-6 justify-between bg-black overflow-hidden rounded-tl-3xl rounded-tr-3xl">
+        <div className="relative top-72  flex flex-col w-full  px-3 lg:px-6 justify-between bg-black overflow-hidden rounded-tl-3xl rounded-tr-3xl">
           {/* Top area: Blocks */}
           <div className="w-full px-4">
             <div className="flex w-full flex-col sm:flex-row justify-between">
