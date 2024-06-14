@@ -82,7 +82,7 @@ const Mobile: React.FC = () => {
           <li>
             <Link
               href="/search"
-              className="w-80 p-2 inline-flex items-center justify-center bg-[#201306]  text-white  border-l-4 border-r-4 border border-white/10 font-bold rounded-full outline-1 outline-double outline-[#201306] hover:bg-[#ff9a03]/50 hover:text-black"
+              className="w-72 p-2 inline-flex items-center justify-center bg-[#201306]  text-white  border-l-4 border-r-4 border border-white/10 font-bold rounded-full outline-1 outline-double outline-[#201306] hover:bg-[#ff9a03]/50 hover:text-black"
               onClick={() => setMobileNavOpen(false)}
             >
               Tap to Boon

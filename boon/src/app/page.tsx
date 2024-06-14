@@ -47,7 +47,7 @@ export default function Home() {
         </span>
       </section>
 
-      <section className="relative top-72  flex flex-col w-full h-[400vh] sm:h-[300vh] lg:h-[220vh] bg-black px-3 lg:px-6 justify-between rounded-bl-3xl rounded-br-3xl   py-24">
+      <section className="relative top-72  flex flex-col w-full h-[330vh] sm:h-[300vh] lg:h-[220vh] bg-black px-3 lg:px-6 justify-between rounded-bl-3xl rounded-br-3xl   py-24">
         <div className="">
           <div className="flex flex-col items-center gap-6 lg:gap-12">
             <h1 className="text-lg text-center lg:text-3xl text-[#F7941E] font-bold leading-8">
@@ -148,7 +148,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative top-72  flex flex-col w-full h-[220vh] lg:h-[140vh] px-3 lg:px-6 justify-between overflow-hidden py-24">
+      <section className="relative top-72  flex flex-col w-full h-[190vh] lg:h-[140vh] px-3 lg:px-6 justify-between overflow-hidden py-24">
         <div className=" flex flex-col items-center py-12">
           <div className="flex flex-col w-full items-center gap-9">
             <h1 className="text-lg lg:text-3xl font-bold text-center">
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       <footer>
-        <div className="relative top-72  flex flex-col w-full h-[85vh] sm:h-[57vh] lg:h-[78vh] xl:h-[65vh] px-3 lg:px-6 justify-between bg-black overflow-hidden rounded-tl-3xl rounded-tr-3xl">
+        <div className="relative top-72  flex flex-col w-full h-[73vh] sm:h-[57vh] lg:h-[78vh] xl:h-[65vh] px-3 lg:px-6 justify-between bg-black overflow-hidden rounded-tl-3xl rounded-tr-3xl">
           {/* Top area: Blocks */}
           <div className="w-full px-4">
             <div className="flex w-full flex-col sm:flex-row justify-between">
@@ -234,7 +234,7 @@ export default function Home() {
               </div>
               <div className="flex justify-between  gap-8 pb-8 md:py-12 ">
                 {/* 1st block */}
-                <div className="flex items-center gap-20">
+                <div className="flex flex-row items-center gap-20">
                   <div className="sm:col-span-6 md:col-span-3 md:text-lg lg:col-span-2">
                     <h6 className="text-white font-medium mb-2">Products</h6>
                     <ul className="text-sm font-semibold md:text-lg">
@@ -254,19 +254,11 @@ export default function Home() {
                           Marketplace
                         </Link>
                       </li>
-                      <li className="mb-2">
-                        <Link
-                          href=""
-                          className="text-white/60 hover:text-white transition duration-150 ease-in-out"
-                        >
-                          Library
-                        </Link>
-                      </li>
                     </ul>
                   </div>
 
                   {/* 3rd block */}
-                  <div className="sm:col-span-6 md:col-span-3 md:text-lg lg:col-span-2">
+                  <div className="sm:col-span-6 md:col-span-3 md:text-lg lg:col-span-2 items-center">
                     <h6 className="text-white font-medium mb-2">Resources</h6>
                     <ul className="text-sm font-semibold md:text-lg">
                       <li className="mb-2">
@@ -292,9 +284,9 @@ export default function Home() {
             </div>
 
             {/* Bottom area */}
-            <div className="md:flex md:items-center md:justify-between py-3 md:py-6 border-t border-gray-200">
+            <div className="md:flex  pt-8 md:items-center md:justify-between py-3 md:py-6 border-t border-gray-200">
               {/* Social as */}
-              <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0">
+              <ul className="flex mb-3 md:order-1 md:ml-4 md:mb-0">
                 <li>
                   <a
                     href="https://x.com/boon_eco?t=wDxsWDKk0MX_hvnsebB-Ig&s=09"

@@ -32,7 +32,7 @@ const Search: React.FC = () => {
   const createUser = async (addy: any) => {
     try {
       const createUserResponse = await fetch(
-        "http://localhost:5000/api/v1/user/create",
+        "https://boon-tuug.onrender.com/api/v1/user/create",
         {
           method: "POST",
           headers: {
@@ -59,7 +59,7 @@ const Search: React.FC = () => {
   const fetchUserPoints = useCallback(async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/user/getUser/${address}`,
+        `https://boon-tuug.onrender.com/api/v1/user/getUser/${address}`,
         {
           method: "GET",
           headers: {
@@ -98,10 +98,10 @@ const Search: React.FC = () => {
   const loadingRef = useRef<HTMLDivElement | null>(null);
 
   const startRecording = async () => {
-    console.log("yes");
+    // console.log("yes");
 
     try {
-      console.log("started");
+      // console.log("started");
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioChunksRef.current = [];
